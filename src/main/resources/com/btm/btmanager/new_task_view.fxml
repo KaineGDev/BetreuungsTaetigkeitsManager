@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.btm.btmanager.HelloController"
+            prefHeight="400.0" prefWidth="600.0">
+
+</AnchorPane>
+-->
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.btm.btmanager.TaskController" spacing="10" alignment="center">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <TableView fx:id="taskTable">
+        <columns>
+            <TableColumn fx:id="descriptionColumn" text="Beschreibung:"/>
+            <TableColumn fx:id="startTimeColumn" text="Startzeit:"/>
+            <TableColumn fx:id="endTimeColumn" text="Endzeit:"/>
+        </columns>
+    </TableView>
+
+    <Label text="Beschreibung: "/>
+    <TextField fx:id="descriptionField"/>
+
+    <Label text="Anfangszeit: "/>
+    <ComboBox fx:id="startHourComboBox" promptText="Stunde"/>
+    <ComboBox fx:id="startMinuteComboBox" promptText="Minute"/>
+
+    <Label text="Endzeit: "/>
+    <ComboBox fx:id="endHourComboBox" promptText="Stunde"/>
+    <ComboBox fx:id="endMinuteComboBox" promptText="Minute"/>
+
+    <Button text="Speichern" fx:id="saveButton" onAction="#handleSaveTask"/>
+
+    <Label fx:id="totalHoursLabel" text="Dauer: "/>
+</VBox>
