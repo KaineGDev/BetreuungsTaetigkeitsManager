@@ -64,7 +64,7 @@ public class TaskRepository {
     public List<Task> loadAllTasks() {
         List<Task> tasks = new ArrayList<>();
 
-        String sql = "SELECT taetigkeit_id, m_id, beschreibung, startzeit, endzeit FROM taetigkeit";
+        String sql = "SELECT * FROM taetigkeit";
 
         try (Connection connection = DriverManager.getConnection(getURL(), getUSER(), getPASSWORD()); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()){
             while (resultSet.next()) {
