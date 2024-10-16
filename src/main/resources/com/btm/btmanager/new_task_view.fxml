@@ -15,13 +15,13 @@
 </AnchorPane>
 -->
 <?import javafx.geometry.Insets?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.btm.btmanager.TaskController" spacing="10" alignment="center">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.btm.btmanager.TaskController" spacing="3" alignment="center" prefHeight="250" prefWidth="350">
 
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
     </padding>
 
-    <TableView fx:id="taskTable">
+    <TableView fx:id="taskTable" visible="false">
         <columns>
             <TableColumn fx:id="descriptionColumn" text="Beschreibung:"/>
             <TableColumn fx:id="startTimeColumn" text="Startzeit:"/>
@@ -29,18 +29,29 @@
         </columns>
     </TableView>
 
-    <Label text="Beschreibung: "/>
+    <Label text="Beschreibung: " alignment="TOP_CENTER"/>
     <TextField fx:id="descriptionField"/>
 
-    <Label text="Anfangszeit: "/>
-    <ComboBox fx:id="startHourComboBox" promptText="Stunde"/>
-    <ComboBox fx:id="startMinuteComboBox" promptText="Minute"/>
+    <HBox spacing="10" alignment="CENTER">
+        <VBox alignment="BASELINE_LEFT">
+            <Label text="Startdatum"/>
+            <DatePicker fx:id="startDatePicker"/>
 
-    <Label text="Endzeit: "/>
-    <ComboBox fx:id="endHourComboBox" promptText="Stunde"/>
-    <ComboBox fx:id="endMinuteComboBox" promptText="Minute"/>
+            <Label text="Uhrzeit: "/>
+            <ComboBox fx:id="startHourComboBox" promptText="std"/>
+            <ComboBox fx:id="startMinuteComboBox" promptText="m"/>
+        </VBox>
+        <VBox alignment="BASELINE_RIGHT">
+            <Label text="Enddatum"/>
+            <DatePicker fx:id="endDatePicker"/>
 
-    <Button text="Speichern" fx:id="saveButton" onAction="#handleSaveTask"/>
-
-    <Label fx:id="totalHoursLabel" text="Dauer: "/>
+            <Label text="Uhrzeit: "/>
+            <ComboBox fx:id="endHourComboBox" promptText="std"/>
+            <ComboBox fx:id="endMinuteComboBox" promptText="m"/>
+        </VBox>
+    </HBox>
+    <VBox alignment="CENTER">
+        <Button text="Speichern" fx:id="saveButton" onAction="#handleSaveTask"/>
+        <Label fx:id="totalHoursLabel" text="Dauer: "/>
+    </VBox>
 </VBox>

@@ -2,6 +2,7 @@ package com.btm.btmanager;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class TaskRepository {
             statement.setInt(1, new_tid);
             statement.setInt(2, new_mid);
             statement.setString(3, task.getBeschreibung());
-            statement.setTime(4, Time.valueOf(task.getStartzeit()));
-            statement.setTime(5, Time.valueOf(task.getEndzeit()));
+            statement.setTimestamp(4, Timestamp.valueOf(task.getStartzeit()));
+            statement.setTimestamp(5, Timestamp.valueOf(task.getEndzeit()));
             if (taskcount == 0) {
                 taskcount = 1;
             } else {
@@ -70,10 +71,10 @@ public class TaskRepository {
                 int id = resultSet.getInt("taetigkeit_id");
                 int mid = resultSet.getInt("m_id");
                 String description = resultSet.getString("beschreibung");
-                java.sql.Time startTime = resultSet.getTime("startzeit");
-                java.sql.Time endTime = resultSet.getTime("endzeit");
+                LocalDateTime startTime = resultSet.getTimestamp("startzeit").toLocalDateTime();
+                LocalDateTime endTime = resultSet.getTimestamp("endzeit").toLocalDateTime();
 
-                Task task = new Task(description, startTime.toLocalTime(), endTime.toLocalTime(), id, mid);
+                Task task = new Task(description, startTime, endTime, id, mid);
                 tasks.add(task);
             }
         } catch (SQLException e) {
@@ -97,8 +98,8 @@ public class TaskRepository {
                 Task task = new Task();
                 task.setTaetigkeit_id(resultSet.getInt("id"));
                 task.setBeschreibung(resultSet.getString("beschreibung"));
-                task.setStartzeit(resultSet.getTime("startzeit").toLocalTime());
-                task.setEndzeit(resultSet.getTime("endzeit").toLocalTime());
+                task.setStartzeit(resultSet.getTimestamp("startzeit").toLocalDateTime());
+                task.setEndzeit(resultSet.getTimestamp("endzeit").toLocalDateTime());
 
                 tasks.add(task);
             }

@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -18,12 +19,6 @@ public class TaskController {
 
     @FXML
     private TextField descriptionField;
-
-    @FXML
-    private TextField startTimeField;
-
-    @FXML
-    private TextField endTimeField;
 
     @FXML
     private ComboBox<Integer> startHourComboBox;
@@ -69,17 +64,25 @@ public class TaskController {
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("startzeit"));
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<>("endzeit"));
 
-        for (int i = 0; i < 24; i++) {
-            startHourComboBox.getItems().add(i);
-            endHourComboBox.getItems().add(i);
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now());
+
+        if (HelloController.currentview.equals("new")) {
+            for (int i = 0; i < 24; i++) {
+                startHourComboBox.getItems().add(i);
+                endHourComboBox.getItems().add(i);
+            }
+
+            for (int i = 0; i < 60; i++) {
+                startMinuteComboBox.getItems().add(i);
+                endMinuteComboBox.getItems().add(i);
+            }
+            saveButton.setOnAction(event -> handleSaveTask());
+        } else {
+
         }
 
-        for (int i = 0; i < 60; i++) {
-            startMinuteComboBox.getItems().add(i);
-            endMinuteComboBox.getItems().add(i);
-        }
 
-        saveButton.setOnAction(event -> handleSaveTask());
     }
 
     private void calculateTotalTime() {
@@ -106,7 +109,7 @@ public class TaskController {
         }
     }
 
-    public void createTask(String description, LocalTime startTime, LocalTime endTime) {
+    public void createTask(String description, LocalDateTime startTime, LocalDateTime endTime) {
         long hours = ChronoUnit.HOURS.between(startTime, endTime);
         long minutes = ChronoUnit.MINUTES.between(startTime, endTime);
 
@@ -125,15 +128,16 @@ public class TaskController {
         Integer startMinute = startMinuteComboBox.getValue();
         Integer endHour = endHourComboBox.getValue();
         Integer endMinute = endMinuteComboBox.getValue();
-        String startTimeString = String.format("%02d:%02d:00", startHour, startMinute);
-        String endTimeString = String.format("%02d:%02d:00", endHour, endMinute);
 
-        java.sql.Time startTime = java.sql.Time.valueOf(startTimeString);
-        java.sql.Time endTime = java.sql.Time.valueOf(endTimeString);
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.of(startHour, startMinute));
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.of(endHour, endMinute));
 
         calculateTotalTime();
 
-        taskRepository.save(new Task(description, startTime.toLocalTime(), endTime.toLocalTime()));
+        taskRepository.save(new Task(description, startDateTime, endDateTime));
         /*
         try (Connection connection = DriverManager.getConnection(TaskRepository.getURL(), TaskRepository.getUSER(), TaskRepository.getPASSWORD())){
             String sql = "INSERT INTO taetigkeit (taetigkeit_id, m_id,beschreibung,startzeit, endzeit) VALUES (?,?,?,?,?)";
@@ -176,6 +180,7 @@ public class TaskController {
     private void handleShowTaskButton(ActionEvent event) {
         handleLoadTasksButton();
         SelectionModel<Task> selectionModel = taskTable.getSelectionModel();
+        System.out.println("SelectionModel gesetzt");
         Task selectedTask = selectionModel.getSelectedItem();
 
         if (selectedTask != null) {
@@ -197,7 +202,9 @@ public class TaskController {
 
     private void handleLoadTasksButton() {
         List<Task> tasks = taskRepository.loadAllTasks();
+        System.out.println("Liste von Tasks geladen");
         taskTable.getItems().clear();
         taskTable.getItems().addAll(tasks);
+        System.out.println("Tasks an Tasktable weitergegeben");
     }
 }

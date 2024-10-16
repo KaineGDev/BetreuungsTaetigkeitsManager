@@ -16,17 +16,19 @@
 -->
 
 <?import javafx.geometry.Insets?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.btm.btmanager.TaskController" spacing="10" alignment="center">
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.btm.btmanager.TaskController" spacing="10" alignment="center" prefHeight="700" prefWidth="950">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
     <children>
-        <Label text="Tätigkeiten anzeigen"/>
-        <Label text="Von: "/>
-        <DatePicker fx:id="startDatePicker"/>
-        <Label text="Bis: "/>
-        <DatePicker fx:id="endDatePicker"/>
+        <Label text="Tätigkeiten anzeigen" alignment="CENTER" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <HBox spacing="5" alignment="CENTER">
+            <Label text="Von: " labelFor="startDatePicker"/>
+            <DatePicker fx:id="startDatePicker"/>
+            <Label text="Bis: " labelFor="endDatePicker"/>
+            <DatePicker fx:id="endDatePicker"/>
+        </HBox>
         <Button text="Tätigkeit anzeigen" onAction="#handleShowTaskButton"/>
 
         <TableView fx:id="taskTable">

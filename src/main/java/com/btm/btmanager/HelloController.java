@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class HelloController {
+    public static String currentview;
     @FXML
     private Label welcomeText;
 
@@ -22,6 +23,7 @@ public class HelloController {
 
     @FXML
     private void handleNewTaskButton(ActionEvent event) throws IOException {
+        currentview = "new";
         FXMLLoader loader = new FXMLLoader(getClass().getResource("new_task_view.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
@@ -31,8 +33,12 @@ public class HelloController {
 
     @FXML
     private void handleViewTasksButton(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view_task_view.fxml"));
+        currentview = "inspect";
+        System.out.println("Methode angesprochen");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view_tasks_view.fxml"));
+        System.out.println("FXMLLoader versucht view zu laden");
         Parent root = loader.load();
+        System.out.println("FXMLLoader hat erfolgreich geladen");
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.show();
