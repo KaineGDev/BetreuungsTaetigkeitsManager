@@ -4,6 +4,8 @@ module com.btm.btmanager {
 
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires kernel;
+    requires layout;
 
     opens com.btm.btmanager to javafx.fxml;
     exports com.btm.btmanager;

@@ -58,16 +58,6 @@ public class TaskRepository {
     }
 
 
-    private void modelUser() {
-//        Properties properties = new Properties();
-//        try (InputStream input Über = DatabaseConfigLoader.){
-//
-//        }
-
-        USER = "postgres";
-        PASSWORD = "rootpw";
-    }
-
     public List<Task> loadAllTasks() {
         List<Task> tasks = new ArrayList<>();
 

@@ -30,6 +30,7 @@
             <DatePicker fx:id="endDatePicker"/>
         </HBox>
         <Button text="Tätigkeit anzeigen" onAction="#handleShowTaskButton"/>
+        <Button text="Als PDF speichern" onAction="#handleCreatePDF"/>
 
         <TableView fx:id="taskTable">
             <columns>

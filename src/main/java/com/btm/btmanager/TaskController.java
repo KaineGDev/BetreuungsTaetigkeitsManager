@@ -11,11 +11,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskController {
     private TaskRepository taskRepository;
     private EmployeeRepository employeeRepository;
+    private List<Task> currentTasks;
+    private String pdfFilePath;
 
     @FXML
     private TextField descriptionField;
@@ -55,6 +58,9 @@ public class TaskController {
     private Button saveButton;
 
     @FXML
+    private Button pdfButton;
+
+    @FXML
     private Label totalHoursLabel;
 
 
@@ -66,6 +72,8 @@ public class TaskController {
 
         startDatePicker.setValue(LocalDate.now());
         endDatePicker.setValue(LocalDate.now());
+        currentTasks = new ArrayList<>();
+        pdfButton.setOnAction(event -> handleCreatePDF());
 
         if (HelloController.currentview.equals("new")) {
             for (int i = 0; i < 24; i++) {
@@ -78,6 +86,7 @@ public class TaskController {
                 endMinuteComboBox.getItems().add(i);
             }
             saveButton.setOnAction(event -> handleSaveTask());
+
         } else {
 
         }
@@ -206,5 +215,13 @@ public class TaskController {
         taskTable.getItems().clear();
         taskTable.getItems().addAll(tasks);
         System.out.println("Tasks an Tasktable weitergegeben");
+    }
+
+    @FXML
+    private void handleCreatePDF() {
+        if (currentTasks.isEmpty()) {
+            System.err.println("No current Tasks!");
+        }
+        PDFService.exportToPdf(currentTasks, pdfFilePath);
     }
 }
