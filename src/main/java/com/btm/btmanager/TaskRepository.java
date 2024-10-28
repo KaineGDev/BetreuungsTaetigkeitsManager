@@ -1,10 +1,13 @@
 package com.btm.btmanager;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class TaskRepository {
     private static String URL = "jdbc:postgresql://localhost:5432/taetigkeitDB";
@@ -13,7 +16,7 @@ public class TaskRepository {
     private int taskcount;
 
     public TaskRepository() {
-        this.modelUser();
+        this.loginUser(loadProperties());
         this.taskcount = 0;
     }
 
@@ -34,8 +37,7 @@ public class TaskRepository {
 
             try (Statement statement3 = connection.createStatement(); ResultSet resultSet = statement3.executeQuery(sql_mid)){
                 if (resultSet.next()) {
-                    int maxId = resultSet.getInt(1);
-                    new_mid = maxId;
+                    new_mid = resultSet.getInt(1);
                 }
             }
 
@@ -57,6 +59,11 @@ public class TaskRepository {
 
 
     private void modelUser() {
+//        Properties properties = new Properties();
+//        try (InputStream input Über = DatabaseConfigLoader.){
+//
+//        }
+
         USER = "postgres";
         PASSWORD = "rootpw";
     }
@@ -82,6 +89,35 @@ public class TaskRepository {
         }
 
         return tasks;
+    }
+
+    public Properties loadProperties() {
+        Properties properties = new Properties();
+        try (InputStream input = this.getClass().getResourceAsStream("/config.properties")){
+            if (input == null) {
+                System.out.println("Sorry, unable to find config.properties");
+                return null;
+            }
+            properties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return properties;
+    }
+
+    public void loginUser(Properties properties) {
+        String url = properties.getProperty("db.url");
+        String username = properties.getProperty("db.username");
+        String password = properties.getProperty("db.password");
+        if (!url.isEmpty()) {
+            URL = url;
+        }
+        if (!username.isEmpty() ) {
+            USER = username;
+        }
+        if (!password.isEmpty()) {
+            PASSWORD = password;
+        }
     }
 
     public List<Task> findByDateRange(LocalDate startDate, LocalDate endDate)  {
